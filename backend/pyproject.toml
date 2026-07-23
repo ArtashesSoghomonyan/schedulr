@@ -17,4 +17,5 @@ dependencies = [
 dev = [
     "black>=26.5.1",
     "django-extensions>=4.1",
+    "faker>=40.35.0",
 ]

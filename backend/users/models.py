@@ -64,8 +64,10 @@ class ProviderProfile(models.Model):
     slug = models.SlugField(blank=True)
 
     def save(self, *args, **kwargs):
+        if self.pk is None:
+            super().save(*args, **kwargs)
         self.slug = f"{slugify(self.business_name)}-{self.id * 3}"
-        super().save(*args, **kwargs)
+        super().save(update_fields=["slug"])
 
     # TODO: phone number field
     # TODO: business types and tags
