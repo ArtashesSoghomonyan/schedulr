@@ -16,4 +16,5 @@ dependencies = [
 [dependency-groups]
 dev = [
     "black>=26.5.1",
+    "django-extensions>=4.1",
 ]
