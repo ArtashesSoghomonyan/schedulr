@@ -18,9 +18,10 @@ class BrowserCompatibleTokenObtainPairView(TokenObtainPairView):
     serializer_class = EmailTokenObtainPairSerializer
 
     def post(self, request):
-        response = super().post(request)
-        login(request, self.get_serializer().user)
-        return response
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        login(request, serializer.user)
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
@@ -47,7 +48,7 @@ class SignupView(APIView):
         serializer = SignupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        self.client.force_authenticate(user=user)
+        login(request, user)
         result = UserSerializer(user).data
         return Response(result, status=status.HTTP_201_CREATED)
 
