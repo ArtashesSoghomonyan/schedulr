@@ -9,7 +9,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from users.permissions import IsAnonymous
 from users.serializers import (
     EmailTokenObtainPairSerializer,
-    RegisterSerializer,
+    SignupSerializer,
     UserSerializer,
 )
 
@@ -44,7 +44,7 @@ class SignupView(APIView):
     permission_classes = [IsAnonymous]
 
     def post(self, request):
-        serializer = RegisterSerializer(data=request.data)
+        serializer = SignupSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         self.client.force_authenticate(user=user)

@@ -7,5 +7,7 @@ from users.models import DeletedUserEmail, User
 
 @receiver(pre_delete, sender=User)
 def create_deleted_email_instance(sender, instance, **kwargs):
+    """Blacklist the email of a verified user when they are deleted."""
+
     if instance.is_verified:
         DeletedUserEmail.objects.create(email=instance.email)

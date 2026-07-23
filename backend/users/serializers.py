@@ -60,7 +60,7 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
         attrs[self.username_field] = attrs.pop("email")
         return super().validate(attrs)
 
-class RegisterSerializer(serializers.Serializer):
+class SignupSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
     username = serializers.CharField(required=True, max_length=50)
     password = serializers.CharField(required=True)
@@ -89,6 +89,11 @@ class RegisterSerializer(serializers.Serializer):
         return value
 
     def validate_password(self, value):
+        """
+        Validate password strength. User is not passed because the user
+        doesn't exist yet — similarity checks (email in password, etc.)
+        are intentionally skipped at registration.
+        """
         validate_password(value)
         return value
 
